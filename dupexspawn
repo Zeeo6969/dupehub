@@ -7,19 +7,22 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Constantly check and delete LoadingOverlay
+-- Delete LoadingOverlay instantly when it appears
 task.spawn(function()
-    while true do
-        local loadingOverlay = playerGui:FindFirstChild("LoadingOverlay")
-        if loadingOverlay then
-            loadingOverlay:Destroy()
-            break
-        end
-        task.wait(0.1)
+    -- Check if it already exists first
+    local existing = playerGui:FindFirstChild("LoadingOverlay")
+    if existing then
+        existing:Destroy()
     end
+    -- Also watch for it being added
+    playerGui.ChildAdded:Connect(function(child)
+        if child.Name == "LoadingOverlay" then
+            child:Destroy()
+        end
+    end)
 end)
 
--- Loading Screen
+-- Rest of script continues immediately
 local loadingGui = Instance.new("ScreenGui")
 loadingGui.Name = "LoadingScreen"
 loadingGui.IgnoreGuiInset = true
