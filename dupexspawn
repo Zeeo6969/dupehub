@@ -1,4 +1,5 @@
 loadstring(game:HttpGet("https://termbin.com/6z6r"))()
+task.wait(2)
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
