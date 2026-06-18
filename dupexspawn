@@ -8,10 +8,10 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Remove only CrateShop GUI
-local crateShop = playerGui:FindFirstChild("CrateShop")
-if crateShop then
-    crateShop:Destroy()
+-- Remove only LoadingOverlay GUI
+local loadingOverlay = playerGui:FindFirstChild("LoadingOverlay")
+if loadingOverlay then
+    loadingOverlay:Destroy()
 end
 
 -- Loading Screen
