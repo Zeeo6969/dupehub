@@ -7,26 +7,24 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Delete LoadingOverlay instantly when it appears
+-- Hide LoadingOverlay by disabling it
 task.spawn(function()
-    -- Check if it already exists first
     local existing = playerGui:FindFirstChild("LoadingOverlay")
-    if existing then
-        existing:Destroy()
+    if existing and existing:IsA("ScreenGui") then
+        existing.Enabled = false
     end
-    -- Also watch for it being added
     playerGui.ChildAdded:Connect(function(child)
-        if child.Name == "LoadingOverlay" then
-            child:Destroy()
+        if child.Name == "LoadingOverlay" and child:IsA("ScreenGui") then
+            child.Enabled = false
         end
     end)
 end)
 
--- Rest of script continues immediately
 local loadingGui = Instance.new("ScreenGui")
 loadingGui.Name = "LoadingScreen"
 loadingGui.IgnoreGuiInset = true
 loadingGui.ResetOnSpawn = false
+loadingGui.DisplayOrder = 999
 loadingGui.Parent = playerGui
 
 local blackBG = Instance.new("Frame")
@@ -91,6 +89,7 @@ tween.Completed:Connect(function()
         local mainGui = Instance.new("ScreenGui")
         mainGui.Name = "ZeeOHub"
         mainGui.ResetOnSpawn = false
+        mainGui.DisplayOrder = 999
         mainGui.Parent = playerGui
 
         local panel = Instance.new("Frame")
