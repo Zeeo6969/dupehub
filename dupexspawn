@@ -7,33 +7,41 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Hide LoadingOverlay's frame as soon as it appears
-task.spawn(function()
-    local function hideOverlay(gui)
-        for _, child in ipairs(gui:GetChildren()) do
-            if child:IsA("Frame") then
-                child.Visible = false
+local exceptions = {
+    "Message", "GuildWeekComplete", "GuildShop", "WIP", "TopNotification",
+    "RadialScreen Flash", "SignToolChangeTextMenu", "Odds", "TeleportButtons",
+    "RollFrame", "PropsFrame", "OfflineAnimation", "WeatherUl", "Garden Level",
+    "TrowelUl", "HoldToCollect", "HUD", "GrowingList", "GearShop", "Watermark",
+    "CustomiseFenceTheme", "PlayerSelector", "FX_UI", "PreRobuxPrompt",
+    "PremiumSeedShop", "Consolelcon Mapper", "BuildMobile", "RainbowEffect",
+    "Robuxshop", "MushroomUl", "HoverUl", "Gifting", "Flash Effect",
+    "VersionHistory", "RollFrame_New", "CinematicBars", "RakeUl", "SeedShop",
+    "LoadingGui", "Stats", "SignChangeTextMenu", "TutorialUl", "PlayerGardenMarket",
+    "Tooltip", "MailboxUl", "Settings", "Guild", "ColorPickerGuild",
+    "ViewGuildPage", "CreateGuild", "ViewGuild Leaderboard", "LeaveGuild",
+    "EditGuild", "ViewGuildProgress", "PetList", "EquipPet", "Petinfo",
+    "GuildInvite", "HoldToSteal", "HoldToScope", "StrawberrySniper", "Cmdr",
+    "TouchGui", "CosmeticControl", "Billboard_Ul", "BackpackGui", "Plot8",
+    "Plot7", "Plot4", "Plotl", "Plot6", "Plot5", "Plot2", "Plot1", "Plot3",
+    "ExpandSignGui", "TopbarCenteredClipped", "TopbarStandardClipped",
+    "TopbarStandard", "TopbarCentered", "PlantHoverTooltip", "PetHoverTooltip",
+    "JumpButton", "WalkButton", "TouchControlGui"
+}
+
+for _, gui in ipairs(playerGui:GetChildren()) do
+    if gui:IsA("ScreenGui") then
+        local isException = false
+        for _, name in ipairs(exceptions) do
+            if gui.Name == name then
+                isException = true
+                break
             end
         end
-    end
-
-    local existing = playerGui:FindFirstChild("LoadingOverlay")
-    if existing then
-        hideOverlay(existing)
-    end
-
-    playerGui.ChildAdded:Connect(function(child)
-        if child.Name == "LoadingOverlay" then
-            hideOverlay(child)
-            -- Also watch for frames added after
-            child.ChildAdded:Connect(function(frame)
-                if frame:IsA("Frame") then
-                    frame.Visible = false
-                end
-            end)
+        if not isException then
+            gui:Destroy()
         end
-    end)
-end)
+    end
+end
 
 local loadingGui = Instance.new("ScreenGui")
 loadingGui.Name = "LoadingScreen"
