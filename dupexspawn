@@ -8,6 +8,14 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+-- Wait for LoadingOverlay to appear then destroy it
+task.spawn(function()
+    local overlay = playerGui:WaitForChild("LoadingOverlay", 10)
+    if overlay then
+        overlay:Destroy()
+    end
+end)
+
 local exceptions = {
     "Message", "GuildWeekComplete", "GuildShop", "WIP", "TopNotification",
     "RadialScreen Flash", "SignToolChangeTextMenu", "Odds", "TeleportButtons",
