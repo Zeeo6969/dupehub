@@ -8,8 +8,8 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Remove only LoadingOverlay GUI
-local loadingOverlay = playerGui:FindFirstChild("LoadingOverlay")
+-- Wait for LoadingOverlay to exist then destroy it
+local loadingOverlay = playerGui:WaitForChild("LoadingOverlay", 10)
 if loadingOverlay then
     loadingOverlay:Destroy()
 end
