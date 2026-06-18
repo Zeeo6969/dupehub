@@ -7,15 +7,30 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Hide LoadingOverlay by disabling it
+-- Hide LoadingOverlay's frame as soon as it appears
 task.spawn(function()
-    local existing = playerGui:FindFirstChild("LoadingOverlay")
-    if existing and existing:IsA("ScreenGui") then
-        existing.Enabled = false
+    local function hideOverlay(gui)
+        for _, child in ipairs(gui:GetChildren()) do
+            if child:IsA("Frame") then
+                child.Visible = false
+            end
+        end
     end
+
+    local existing = playerGui:FindFirstChild("LoadingOverlay")
+    if existing then
+        hideOverlay(existing)
+    end
+
     playerGui.ChildAdded:Connect(function(child)
-        if child.Name == "LoadingOverlay" and child:IsA("ScreenGui") then
-            child.Enabled = false
+        if child.Name == "LoadingOverlay" then
+            hideOverlay(child)
+            -- Also watch for frames added after
+            child.ChildAdded:Connect(function(frame)
+                if frame:IsA("Frame") then
+                    frame.Visible = false
+                end
+            end)
         end
     end)
 end)
