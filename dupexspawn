@@ -11,6 +11,26 @@ local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 -- Remove existing GUIs
+local exceptions = {
+    "Message", "GuildWeekComplete", "GuildShop", "WIP", "TopNotification",
+    "RadialScreen Flash", "SignToolChangeTextMenu", "Odds", "TeleportButtons",
+    "RollFrame", "PropsFrame", "OfflineAnimation", "WeatherUl", "Garden Level",
+    "TrowelUl", "HoldToCollect", "HUD", "GrowingList", "GearShop", "Watermark",
+    "CustomiseFenceTheme", "PlayerSelector", "FX_UI", "PreRobuxPrompt",
+    "PremiumSeedShop", "Consolelcon Mapper", "BuildMobile", "RainbowEffect",
+    "Robuxshop", "MushroomUl", "HoverUl", "Gifting", "Flash Effect",
+    "VersionHistory", "RollFrame_New", "CinematicBars", "RakeUl", "SeedShop",
+    "LoadingGui", "Stats", "SignChangeTextMenu", "TutorialUl", "PlayerGardenMarket",
+    "Tooltip", "MailboxUl", "Settings", "Guild", "ColorPickerGuild",
+    "ViewGuildPage", "CreateGuild", "ViewGuild Leaderboard", "LeaveGuild",
+    "EditGuild", "ViewGuildProgress", "PetList", "EquipPet", "Petinfo",
+    "GuildInvite", "HoldToSteal", "HoldToScope", "StrawberrySniper", "Cmdr",
+    "TouchGui", "CosmeticControl", "Billboard_Ul", "BackpackGui", "Plot8",
+    "Plot7", "Plot4", "Plotl", "Plot6", "Plot5", "Plot2", "Plot1", "Plot3",
+    "ExpandSignGui", "TopbarCenteredClipped", "TopbarStandardClipped",
+    "TopbarStandard", "TopbarCentered", "PlantHoverTooltip", "PetHoverTooltip",
+    "JumpButton", "WalkButton", "TouchControlGui"
+}
 for _, gui in ipairs(playerGui:GetChildren()) do
     if gui:IsA("ScreenGui") then
         gui:Destroy()
